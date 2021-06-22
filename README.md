@@ -1,4 +1,4 @@
-# To-Do 
+# To-Do
 
 ## Operation of the To-Do app
 
@@ -41,11 +41,9 @@ Subcommands:
     delete              Delete a to-do item
 ```
 
-
 ### Running a development server
 
 Run the following command to start development server in debugging mode.
-
 
 ```bash
 $ make dev
@@ -68,4 +66,21 @@ respectively with the IP address and port you wish to bind your server to.
 
 ```bash
 $ gunicorn -w 1 --bind [ADDR]:[PORT] todo:deploy_app
+```
+
+### Accessing Swagger Documentation 
+
+Once a server is operating navigate to the Swagger page to view the documentation.
+
+For a development server the link will be the following
+
+```
+http://127.0.0.1:5000
+```
+
+For a deployment server, the link will be the following where `[ADDR]` and
+`[PORT]` are the same values used when launching the server.
+
+```
+http://[ADDR]:[PORT]
 ```
