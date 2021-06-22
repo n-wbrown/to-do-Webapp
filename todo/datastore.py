@@ -15,7 +15,6 @@ def row_to_dict(input: sqlite3.Row) -> dict:
 def get_db(db_path: Union[str, None] = None) -> sqlite3.Connection:
     if db_path is None:
         if 'db' not in g:
-            print(current_app.config['DATABASE'])
             if type(current_app.config['DATABASE']) is tuple:
                 db_location = current_app.config['DATABASE'][0]
             else:
