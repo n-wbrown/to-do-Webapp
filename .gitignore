@@ -1,0 +1,7 @@
+*.swp
+.vim
+instance/
+__pycache__
+*.egg-info
+*.sqlite
+*.db
