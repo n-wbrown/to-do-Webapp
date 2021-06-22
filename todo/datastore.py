@@ -56,9 +56,9 @@ def close_db(db: Union[sqlite3.Connection, None] = None):
 def use_db_wrapper(f):
     def wrapped(*args, **kwargs):
         db_path = kwargs.get("db_path", None)
-        db = get_db()
+        db = get_db(db_path=db_path)
         output = f(*args, db=db, **kwargs)
-        close_db()
+        close_db(db=db)
         return output
     return wrapped
 
@@ -77,21 +77,19 @@ def list_tables(db: sqlite3.Connection):
 
 
 @use_db_wrapper
-def init_db(db: sqlite3.Connection):
+def init_db(db: sqlite3.Connection, **kwargs):
     cur = db.cursor()
     try:
         # if this is an empty database with no table, create the table
         cur.execute('''CREATE TABLE todo
                     (id integer primary key, item text, status text)
                     ''')
-        current_app.logger.info("Adding table to database")
     except sqlite3.OperationalError:
         # if the table already exists in the database, do nothing
-        current_app.logger.debug("Database table already created")
-
+        pass
 
 @use_db_wrapper
-def create(item: str, status: str, db: sqlite3.Connection) -> int:
+def create(item: str, status: str, db: sqlite3.Connection, **kwargs) -> int:
     cursor = db.cursor()
     assert type(item) == str
     assert type(status) == str
@@ -103,7 +101,7 @@ def create(item: str, status: str, db: sqlite3.Connection) -> int:
 
 
 @use_db_wrapper
-def read(id: int, db: sqlite3.Connection) -> Union[sqlite3.Row, None]:
+def read(id: int, db: sqlite3.Connection, **kwargs) -> Union[sqlite3.Row, None]:
     cursor = db.cursor()
     output = cursor.execute("SELECT * FROM todo where id=:id", {"id": id})
     result = []
@@ -118,7 +116,7 @@ def read(id: int, db: sqlite3.Connection) -> Union[sqlite3.Row, None]:
 
 
 @use_db_wrapper
-def read_all(db: sqlite3.Connection) -> List[sqlite3.Row]:
+def read_all(db: sqlite3.Connection, **kwargs) -> List[sqlite3.Row]:
     cursor = db.cursor()
     rows = []
     for row in cursor.execute('SELECT * FROM todo ORDER BY id'):
@@ -129,7 +127,7 @@ def read_all(db: sqlite3.Connection) -> List[sqlite3.Row]:
 @use_db_wrapper
 def update(
     id: int, item: Union[str, None],
-    status: Union[str, None], db: sqlite3.Connection
+    status: Union[str, None], db: sqlite3.Connection, **kwargs
 ):
     cursor = db.cursor()
     assert (type(item) == str) or (item is None)
@@ -147,7 +145,7 @@ def update(
 
 
 @use_db_wrapper
-def delete(id: int, db: sqlite3.Connection):
+def delete(id: int, db: sqlite3.Connection, **kwargs):
     cursor = db.cursor()
     cursor.execute(
         '''DELETE FROM todo WHERE id=:id''',
