@@ -68,7 +68,7 @@ respectively with the IP address and port you wish to bind your server to.
 $ gunicorn -w 1 --bind [ADDR]:[PORT] todo:deploy_app
 ```
 
-### Accessing Swagger Documentation 
+## Accessing Swagger Documentation 
 
 Once a server is operating navigate to the Swagger page to view the documentation.
 
