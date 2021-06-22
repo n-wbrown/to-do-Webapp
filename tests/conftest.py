@@ -32,3 +32,29 @@ def client_populated():
 
     os.close(db_fd)
     os.unlink(db_path)
+
+
+@pytest.fixture
+def cli_empty():
+    db_fd, db_path = tempfile.mkstemp()
+
+    datastore.init_db(db_path=db_path)
+    yield db_path
+
+    os.close(db_fd)
+    os.unlink(db_path)
+
+
+@pytest.fixture
+def cli_populated():
+    db_fd, db_path = tempfile.mkstemp()
+
+    datastore.init_db(db_path=db_path)
+    datastore.create("buy oranges", "",db_path=db_path)
+    datastore.create("wash car", "done",db_path=db_path)
+    datastore.create("check mail", "started",db_path=db_path)
+
+    yield db_path
+
+    os.close(db_fd)
+    os.unlink(db_path)

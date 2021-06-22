@@ -11,7 +11,7 @@ setup(
     name="todo",
     author="Nolan Brown",
     python_requires='>=3.7',
-    entry_points = {
+    entry_points={
         'console_scripts': [
             'todo = todo.bin:main',
         ]
