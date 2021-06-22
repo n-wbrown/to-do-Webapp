@@ -2,36 +2,6 @@ import pytest, tempfile, os
 from todo import create_app, datastore
 
 
-# @pytest.fixture
-# def app_empty():
-#     app = create_app()
-#     app.config["TESTING"] = True
-#     app.config["DATABASE"] = ":memory:"
-#     with app.app_context():
-#         datastore.init_db()
-#     return app
-# 
-# 
-# @pytest.fixture
-# def client_empty():
-#     app = create_app()
-#     app.config["TESTING"] = True
-#     app.config["DATABASE"] = ":memory:"
-#     with app.test_client() as client:
-#         yield client
-# 
-# 
-# @pytest.fixture
-# def client_populated():
-#     app = create_app()
-#     app.config["TESTING"] = True
-#     app.config["DATABASE"] = ":memory:"
-#     with app.app_context:
-#        pass 
-#     with app.test_client() as client:
-#         yield client
-
-
 @pytest.fixture
 def client_empty():
     db_fd, db_path = tempfile.mkstemp()

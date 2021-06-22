@@ -37,8 +37,11 @@ def get_db(db_path: Union[str, None] = None) -> sqlite3.Connection:
         return db
 
 
-def close_db(db: Union[sqlite3.Connection, None] = None):
-    if db is None:
+def close_db(
+    db: Union[sqlite3.Connection, None] = None,
+    close: bool = True, **kwargs
+):
+    try:
         db = g.pop('db', None)
         if db is not None:
             db.commit()
@@ -48,7 +51,7 @@ def close_db(db: Union[sqlite3.Connection, None] = None):
         cursor = g.pop('cursor', None)
         if cursor is not None:
             del cursor
-    else:
+    except RuntimeError:
         db.commit()
         db.close()
 
@@ -58,7 +61,7 @@ def use_db_wrapper(f):
         db_path = kwargs.get("db_path", None)
         db = get_db(db_path=db_path)
         output = f(*args, db=db, **kwargs)
-        close_db(db=db)
+        close_db(db=db, **kwargs)
         return output
     return wrapped
 
@@ -77,7 +80,13 @@ def list_tables(db: sqlite3.Connection):
 
 
 @use_db_wrapper
-def init_db(db: sqlite3.Connection, **kwargs):
+def init_db(
+    db: sqlite3.Connection = None,
+    db_path: Union[str, None] = None, **kwargs
+):
+    if db is None: 
+        db = get_db(db_path)
+    
     cur = db.cursor()
     try:
         # if this is an empty database with no table, create the table

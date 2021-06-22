@@ -17,7 +17,7 @@ def create(db, item: str, status: str, **kwargs) -> int:
     }
 
 
-def read(db, id: Union[str, None] = None, **kwargs) -> Union[dict,None]:
+def read(db, id: Union[str, None] = None, **kwargs) -> Union[dict, None]:
     datastore.init_db(db_path=db)
     if id is not None:
         result = datastore.read(id=id, db_path=db)
@@ -130,6 +130,8 @@ def main():
         return 1
 
     try:
-        ops[subcommand](**args)
+        result = ops[subcommand](**args)
+        if result is not None:
+            print(result)
     except CLIerror as e:
         print(e)
