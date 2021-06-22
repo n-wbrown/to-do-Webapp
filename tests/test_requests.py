@@ -12,6 +12,7 @@ def test_CreateNoData(client_empty):
         }
     )
     data = json.loads(rv.data)
+    print(data)
     assert data == {'id': 1, 'item': 'refill gas', 'status': 'done'}
     with app.app_context():
         output = datastore.read_all()
