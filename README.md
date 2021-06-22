@@ -1,4 +1,4 @@
-# To-Do Webapp
+# To-Do 
 
 ## Operation of the To-Do app
 
@@ -19,6 +19,28 @@ Run the following command to run the tests.
 ```bash
 $ make test
 ```
+### Running the CLI
+
+The CLI tool can be run using the following syntax. The `create`, `read`,
+`update`, and `delete` subcommands each have their own arguments that can be
+read using the `--help` command following the respective subcommand.
+
+```bash
+usage: todo [-h] --db DB {create,read,update,delete} ...
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --db DB               select your database
+
+Subcommands:
+
+  {create,read,update,delete}
+    create              Create a new to-do item
+    read                Read the data of an existing to-do item
+    update              Update an existing to-do item
+    delete              Delete a to-do item
+```
+
 
 ### Running a development server
 
