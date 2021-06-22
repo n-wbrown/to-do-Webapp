@@ -24,7 +24,9 @@ def read(db, id: Union[str, None] = None, **kwargs) -> Union[dict, None]:
         if result is not None:
             output = datastore.row_to_dict(result)
         else:
-            output = None
+            raise CLIerror("No entry with that ID exists")
+            return
+
     else:
         result = datastore.read_all(db_path=db)
         output = []
